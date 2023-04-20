@@ -1,0 +1,15 @@
+image: localhost:5000/linc-ci-build
+
+build_job:
+  stage: build
+  script:
+    - source /opt/ros/${ROS_DISTRO}/setup.bash
+    - echo "Creating catkin workspace"
+    - mkdir -p dev_ws/src
+    - cd dev_ws
+    - catkin init
+    - cd src
+    - echo "Fetching repos"
+    - git clone --branch ${CI_COMMIT_REF_NAME} https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.robotics.caltech.edu/linc/core_msgs.git
+    - echo "Starting build job..."
+    - catkin build
