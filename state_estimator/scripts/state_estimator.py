@@ -24,7 +24,7 @@ class state_estimator:
         self.imu_acc_offset = [0, 0, 0]
         # self.imu_init = True
         self.init_step = 0
-        self.init_max = 100
+        self.init_max = 10
         self.orientation_imu = [0, 0, 0]
         self.angular_velocity_imu = [0, 0, 0]
         self.linear_acceleration_imu = [0, 0, 0]
@@ -44,6 +44,7 @@ class state_estimator:
         self.gt_time_list = []
         self.init_ori = [0, 0, 0]
         self.imu_time_list = None
+        self.start_pos = True
 
     def gt_cb(self, data):
         self.gt_path.header = data.header
@@ -57,6 +58,10 @@ class state_estimator:
             self.init_ori = self.gt_ori
             self.init = False
         if self.imu_time_list:
+            if self.start_pos:
+                self.pos = [data.pose.position.x,
+                            data.pose.position.y, data.pose.position.z]
+            self.start_pos = False
             self.gt_time_list.append(self.imu_time-self.imu_time_list[0])
             self.gt_pos_list.append(
                 [data.pose.position.x, data.pose.position.y, data.pose.position.z])
@@ -79,7 +84,7 @@ class state_estimator:
             self.imu_acc_offset = [linear_acceleration[0] + self.imu_acc_offset[0], linear_acceleration[1] +
                                    self.imu_acc_offset[1], linear_acceleration[2] + self.imu_acc_offset[2]]
             self.imu_ori_offset = [orientation_imu_raw[0] - self.init_ori[0] + self.imu_ori_offset[0], orientation_imu_raw[1] -
-                                   self.init_ori[1] + self.imu_ori_offset[1], orientation_imu_raw[2] - self.init_ori[2] + self.imu_ori_offset[2]+0.55]
+                                   self.init_ori[1] + self.imu_ori_offset[1], orientation_imu_raw[2] - self.init_ori[2] + self.imu_ori_offset[2]+0.3]
             self.angular_velocity_offset = [angular_velocity[0] + self.angular_velocity_offset[0], angular_velocity[1] +
                                             self.angular_velocity_offset[1], angular_velocity[2] + self.angular_velocity_offset[2]]
             self.init_step += 1
@@ -94,8 +99,6 @@ class state_estimator:
             self.init_step += 1  # init finished
         elif not self.init:
             self.imu_time = time
-            print("gt yaw:", self.gt_ori[2],
-                  " imu yaw:", self.orientation_imu[2])
             self.linear_acceleration_imu = [linear_acceleration[0] - self.imu_acc_offset[0],
                                             linear_acceleration[1] - self.imu_acc_offset[1], linear_acceleration[2] - self.imu_acc_offset[2]]
             self.orientation_imu = [orientation_imu_raw[0] - self.imu_ori_offset[0], orientation_imu_raw[1] -
@@ -105,8 +108,6 @@ class state_estimator:
                 self.orientation_imu[1], -np.pi, np.pi), np.clip(self.orientation_imu[2], -np.pi, np.pi)]
             self.angular_velocity_imu = [angular_velocity[0] - self.angular_velocity_offset[0], angular_velocity[1] -
                                          self.angular_velocity_offset[1], angular_velocity[2] - self.angular_velocity_offset[2]]
-            print("orientation_offset:",
-                  orientation_imu_raw[2], self.imu_ori_offset[2])
             # self.elevation_dot_dot = self.linear_acceleration_imu[2]
             if self.imu_old_time == 0:  # first time
                 self.imu_old_time = self.imu_time
