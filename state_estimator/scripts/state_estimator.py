@@ -41,10 +41,14 @@ class state_estimator:
         self.gt_pos_list = []
         self.orientation_imu_list = []
         self.orientation_gt_list = []
+        self.velocity_imu_list = []
+        self.velocity_gt_list = []
         self.gt_time_list = []
         self.init_ori = [0, 0, 0]
         self.imu_time_list = None
         self.start_pos = True
+        self.old_pos = [0, 0, 0]
+        self.gt_old_time = 0
 
     def gt_cb(self, data):
         self.gt_path.header = data.header
@@ -56,6 +60,7 @@ class state_estimator:
             self.pos = [data.pose.position.x,
                         data.pose.position.y, data.pose.position.z]
             self.init_ori = self.gt_ori
+            self.old_pos = self.pos
             self.init = False
         if self.imu_time_list:
             if self.start_pos:
@@ -65,7 +70,17 @@ class state_estimator:
             self.gt_time_list.append(self.imu_time-self.imu_time_list[0])
             self.gt_pos_list.append(
                 [data.pose.position.x, data.pose.position.y, data.pose.position.z])
+            if self.gt_old_time == 0:
+                self.gt_old_time = self.imu_time
             self.orientation_gt_list.append(self.gt_ori)
+            if(self.imu_time-self.gt_old_time == 0):
+                self.velocity_gt_list.append([0, 0, 0])
+            else:
+                self.velocity_gt_list.append(
+                [(data.pose.position.x-self.old_pos[0])/(self.imu_time-self.gt_old_time), (data.pose.position.y-self.old_pos[1])/(self.imu_time-self.gt_old_time), (data.pose.position.z-self.old_pos[2])/(self.imu_time-self.gt_old_time)])
+            self.old_pos = [data.pose.position.x,
+                            data.pose.position.y, data.pose.position.z]
+            self.gt_old_time = self.imu_time
 
     def imu_cb(self, data):
         time = data.header.stamp.to_sec()
@@ -84,15 +99,15 @@ class state_estimator:
             self.imu_acc_offset = [linear_acceleration[0] + self.imu_acc_offset[0], linear_acceleration[1] +
                                    self.imu_acc_offset[1], linear_acceleration[2] + self.imu_acc_offset[2]]
             self.imu_ori_offset = [orientation_imu_raw[0] - self.init_ori[0] + self.imu_ori_offset[0], orientation_imu_raw[1] -
-                                   self.init_ori[1] + self.imu_ori_offset[1], orientation_imu_raw[2] - self.init_ori[2] + self.imu_ori_offset[2]+0.3]
+                                   self.init_ori[1] + self.imu_ori_offset[1], orientation_imu_raw[2] - self.init_ori[2] + self.imu_ori_offset[2]]
             self.angular_velocity_offset = [angular_velocity[0] + self.angular_velocity_offset[0], angular_velocity[1] +
                                             self.angular_velocity_offset[1], angular_velocity[2] + self.angular_velocity_offset[2]]
             self.init_step += 1
         elif self.init_step == self.init_max and not self.init:
             self.imu_acc_offset = [self.imu_acc_offset[0]/self.init_max,
-                                   self.imu_acc_offset[1]/self.init_max, self.imu_acc_offset[2]/self.init_max]
+                                   self.imu_acc_offset[1]/self.init_max, self.imu_acc_offset[2]/self.init_max-0.12]
             self.imu_ori_offset = [self.imu_ori_offset[0]/self.init_max,
-                                   self.imu_ori_offset[1]/self.init_max, self.imu_ori_offset[2]/self.init_max]
+                                   self.imu_ori_offset[1]/self.init_max, self.imu_ori_offset[2]/self.init_max+0.3]
             self.angular_velocity_offset = [self.angular_velocity_offset[0]/self.init_max,
                                             self.angular_velocity_offset[1]/self.init_max, self.angular_velocity_offset[2]/self.init_max]
             self.imu_time_list = [time]
@@ -127,6 +142,7 @@ class state_estimator:
             self.imu_old_time = self.imu_time
             self.imu_time_list.append(self.imu_time-self.imu_time_list[0])
             self.orientation_imu_list.append(self.orientation_imu)
+            self.velocity_imu_list.append(self.vel)
 
     def plot(self):
         self.imu_time_list.pop(0)
@@ -134,6 +150,8 @@ class state_estimator:
         self.gt_pos_list = np.array(self.gt_pos_list).T
         self.orientation_imu_list = np.array(self.orientation_imu_list).T
         self.orientation_gt_list = np.array(self.orientation_gt_list).T
+        self.velocity_gt_list = np.array(self.velocity_gt_list).T
+        self.velocity_imu_list = np.array(self.velocity_imu_list).T
 
         plt.plot(self.gt_time_list, self.gt_pos_list[2])
         plt.plot(self.imu_time_list, self.pos_list[2])
@@ -161,6 +179,19 @@ class state_estimator:
         plt.legend(['OptiTrack', 'IMU'])
         plt.savefig('../figs/yaw.png')
         plt.close()
+
+        plt.plot(self.gt_time_list, self.velocity_gt_list[0])
+        plt.plot(self.gt_time_list, self.velocity_gt_list[1])
+        plt.plot(self.imu_time_list, self.velocity_imu_list[0])
+        plt.plot(self.imu_time_list, self.velocity_imu_list[1])
+        plt.xlabel('time (s)')
+        plt.ylabel('velocity (m/s)')
+        plt.title('Velocity vs time')
+        plt.legend(['OptiTrack x', 'OptiTrack y', 'IMU x', 'IMU y'])
+        plt.savefig('../figs/velocity.png')
+
+
+
 
         # plt.show()
 
