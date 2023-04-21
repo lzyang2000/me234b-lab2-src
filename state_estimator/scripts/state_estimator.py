@@ -182,8 +182,8 @@ class state_estimator:
         plt.savefig('../figs/yaw.png')
         plt.close()
 
-        plt.plot(self.gt_time_list[np.where(self.velocity_gt_list[0]>0)], self.velocity_gt_list[0][np.where(self.velocity_gt_list[0]>0)])
-        plt.plot(self.gt_time_list[np.where(self.velocity_gt_list[1]>0)], self.velocity_gt_list[1][np.where(self.velocity_gt_list[1]>0)])
+        plt.plot(self.gt_time_list[self.velocity_gt_list[0]>0], self.velocity_gt_list[0][self.velocity_gt_list[0]>0])
+        plt.plot(self.gt_time_list[self.velocity_gt_list[1]>0], self.velocity_gt_list[1][self.velocity_gt_list[1]>0])
         plt.plot(self.imu_time_list, self.velocity_imu_list[0])
         plt.plot(self.imu_time_list, self.velocity_imu_list[1])
         plt.xlabel('time (s)')
