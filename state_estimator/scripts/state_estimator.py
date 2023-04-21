@@ -152,6 +152,8 @@ class state_estimator:
         self.orientation_gt_list = np.array(self.orientation_gt_list).T
         self.velocity_gt_list = np.array(self.velocity_gt_list).T
         self.velocity_imu_list = np.array(self.velocity_imu_list).T
+        self.gt_time_list = np.array(self.gt_time_list)
+        self.imu_time_list = np.array(self.imu_time_list)
 
         plt.plot(self.gt_time_list, self.gt_pos_list[2])
         plt.plot(self.imu_time_list, self.pos_list[2])
@@ -180,8 +182,8 @@ class state_estimator:
         plt.savefig('../figs/yaw.png')
         plt.close()
 
-        plt.plot(self.gt_time_list, self.velocity_gt_list[0])
-        plt.plot(self.gt_time_list, self.velocity_gt_list[1])
+        plt.plot(self.gt_time_list[np.where(self.velocity_gt_list[0]>0)], self.velocity_gt_list[0][np.where(self.velocity_gt_list[0]>0)])
+        plt.plot(self.gt_time_list[np.where(self.velocity_gt_list[1]>0)], self.velocity_gt_list[1][np.where(self.velocity_gt_list[1]>0)])
         plt.plot(self.imu_time_list, self.velocity_imu_list[0])
         plt.plot(self.imu_time_list, self.velocity_imu_list[1])
         plt.xlabel('time (s)')
