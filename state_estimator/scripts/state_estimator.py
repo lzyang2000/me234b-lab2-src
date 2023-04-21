@@ -126,7 +126,7 @@ class state_estimator:
             -orientation_imu_raw[2],
         ]  # flip the yaw
         angular_velocity = [angular_velocity.x, angular_velocity.y, -angular_velocity.z]
-        if self.init_step < self.init_max and not self.init:  # init for 0.5 second
+        if self.init_step < self.init_max and not self.init:  # init for 0.05 second
             self.imu_acc_offset = [
                 linear_acceleration[0] + self.imu_acc_offset[0],
                 linear_acceleration[1] + self.imu_acc_offset[1],
@@ -147,12 +147,12 @@ class state_estimator:
             self.imu_acc_offset = [
                 self.imu_acc_offset[0] / self.init_max,
                 self.imu_acc_offset[1] / self.init_max,
-                self.imu_acc_offset[2] / self.init_max - 0.12,
+                self.imu_acc_offset[2] / self.init_max - 0.12 # 0
             ]
             self.imu_ori_offset = [
                 self.imu_ori_offset[0] / self.init_max,
                 self.imu_ori_offset[1] / self.init_max,
-                self.imu_ori_offset[2] / self.init_max + 0.3,
+                self.imu_ori_offset[2] / self.init_max + 0.3 # 0.55
             ]
             self.angular_velocity_offset = [
                 self.angular_velocity_offset[0] / self.init_max,
@@ -254,14 +254,8 @@ class state_estimator:
         plt.savefig("../figs/yaw.png")
         plt.close()
 
-        plt.plot(
-            self.gt_time_list[self.velocity_gt_list[0] > 0],
-            self.velocity_gt_list[0][self.velocity_gt_list[0] > 0],
-        )
-        plt.plot(
-            self.gt_time_list[self.velocity_gt_list[1] > 0],
-            self.velocity_gt_list[1][self.velocity_gt_list[1] > 0],
-        )
+        plt.plot(self.gt_time_list, self.velocity_gt_list[0])
+        plt.plot(self.gt_time_list, self.velocity_gt_list[1])
         plt.plot(self.imu_time_list, self.velocity_imu_list[0])
         plt.plot(self.imu_time_list, self.velocity_imu_list[1])
         plt.xlabel("time (s)")
