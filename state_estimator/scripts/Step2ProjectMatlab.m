@@ -29,7 +29,7 @@ theta_old = 0;
 timestep = 1/15;
 
 for i = 1:length(left_track_vel)
-    velocity_new = left_track_vel(i) - right_track_vel(i) * timestep / 2;
+    velocity_new = (left_track_vel(i) - right_track_vel(i)) / 2;
     theta_new = theta_old + -1 * (( left_track_vel(i) + right_track_vel(i) ) * timestep / width ) / 2;
     x_new = x_old + cos(theta_new) * velocity_new * timestep;
     y_new = y_old + sin(theta_new) * velocity_new * timestep;
