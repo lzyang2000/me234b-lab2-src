@@ -1,0 +1,27 @@
+<launch>
+	<!-- you can load an exisiting tree with <node ... args="tree.bt"> !-->
+	<node pkg="octomap_server" type="octomap_tracking_server_node" name="octomap_talker" output="screen">
+		<param name="resolution" value="0.02" />
+		<param name="frame_id" type="string" value="world" />
+		<param name="sensor_model/max_range" value="4.0" />
+		<param name="save_directory" value="$(optenv OCTOMAP_SAVE_DIR ./)" />
+		<param name="track_changes" value="true"/>
+		<param name="listen_changes" value="false"/>
+		<param name="topic_changes" value="/octomap_tracking_server/changeset" />
+		<remap from="cloud_in" to="/front_lower_camera/point_cloud/cloud_registered" />
+	</node>
+</launch>
+
+
+<!-- <launch>
+	<node pkg="octomap_server" type="octomap_server_node" name="octomap_server">
+		<param name="resolution" value="0.05" />
+		
+		<param name="frame_id" type="string" value="odom_combined" />
+		
+		<param name="sensor_model/max_range" value="5.0" />
+		
+		<remap from="cloud_in" to="/narrow_stereo/points_filtered2" />
+	
+	</node>
+</launch> -->

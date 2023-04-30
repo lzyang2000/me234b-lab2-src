@@ -462,13 +462,13 @@ class state_estimator:
         plt.close()
 
         plt.plot(self.gt_pos_list[0], self.gt_pos_list[1])
-        # plt.plot(self.imu_pos_list[0], self.imu_pos_list[1])
+        plt.plot(self.imu_pos_list[0], self.imu_pos_list[1])
         plt.plot(self.track_pos_list[0], self.track_pos_list[1])
         # plt.plot(self.ekf_pos_list[0], self.ekf_pos_list[1])
         plt.xlabel("x (m)")
         plt.ylabel("y (m)")
         plt.title("path")
-        plt.legend(["OptiTrack","Track"])
+        plt.legend(["OptiTrack", "IMU", "Track"])
         plt.savefig("../figs/track_path.png")
         plt.close()
         
