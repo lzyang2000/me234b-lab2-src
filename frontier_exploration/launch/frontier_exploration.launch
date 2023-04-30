@@ -1,0 +1,5 @@
+<launch>
+  <node name="rviz" pkg="rviz" type="rviz" required="true" args="-d $(find state_estimator)/config/lab2.rviz" />
+  <include file="$(find frontier_exploration)/launch/mapping.launch"/>
+  <node pkg="state_estimator" type="playbags.sh" name="player" output="log" args="$(find state_estimator)/../../bags/*.bag" />
+</launch>
