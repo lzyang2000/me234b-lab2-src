@@ -11,6 +11,6 @@ global_costmap:
 
   #We'll use a map served by the map_server to initialize this costmap
   static_map: false
-  rolling_window: false
+  rolling_window: true
 
   footprint_padding: 0.02

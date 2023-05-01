@@ -12,10 +12,15 @@ rospy.init_node("move_base_demo")
 goal_pub = rospy.Publisher("move_base_simple/goal",  PoseStamped,queue_size=1)
 
 goal = PoseStamped()
-goal.header.frame_id = "/base_link"
+goal.header.frame_id = "map"
 goal.header.stamp = rospy.Time.now()
 goal.pose.position.z = 0.0
-goal.pose.position.x = 1.5
-goal.pose.position.y = 0
-goal.pose.orientation.w = 1.0
-goal_pub.publish(goal)
+goal.pose.position.x = -2
+goal.pose.position.y = 1
+goal.pose.orientation.w = 0
+goal.pose.orientation.x = 0
+goal.pose.orientation.y = 0
+goal.pose.orientation.z = -1
+while rospy.is_shutdown() == False:
+    goal_pub.publish(goal)
+    rospy.sleep(2.0)
