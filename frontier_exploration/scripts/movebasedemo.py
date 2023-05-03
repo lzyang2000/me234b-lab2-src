@@ -12,7 +12,7 @@ rospy.init_node("move_base_demo")
 goal_pub = rospy.Publisher("move_base_simple/goal",  PoseStamped,queue_size=1)
 
 goal = PoseStamped()
-goal.header.frame_id = "map"
+goal.header.frame_id = "flipper/map"
 goal.header.stamp = rospy.Time.now()
 goal.pose.position.z = 0.0
 goal.pose.position.x = -2

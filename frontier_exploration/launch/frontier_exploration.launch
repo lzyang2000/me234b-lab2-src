@@ -2,9 +2,9 @@
   <param name="/use_sim_time" value="true"/>
   <node name="rviz" pkg="rviz" type="rviz" required="true" args="-d $(find state_estimator)/config/lab2.rviz" />
   <include file="$(find frontier_exploration)/launch/mapping.launch"/>
-  <include file="$(find frontier_exploration)/launch/move_base.xml"/>
-  <node pkg="state_estimator" type="playbags.sh" name="player" output="log" args="$(find state_estimator)/../../bags/*.bag" />
-  <node name="demo" pkg="frontier_exploration" type="movebasedemo.py" output="screen" cwd="node"/>
+  <!-- <include file="$(find frontier_exploration)/launch/move_base.xml"/> -->
+  <node pkg="state_estimator" type="playbags.sh" name="player" output="log" args="$(find state_estimator)/../../bags/2022-05-02-19-26-58.bag" />
+  <!-- <node name="demo" pkg="frontier_exploration" type="movebasedemo.py" output="screen" cwd="node"/> -->
 
 
 </launch>
