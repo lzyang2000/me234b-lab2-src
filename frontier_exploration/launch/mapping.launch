@@ -5,7 +5,7 @@
 		<param name="frame_id" type="string" value="flipper/map" />
 		<param name="base_frame_id" type="string" value="flipper/base_link_odom" />
 		
-		<param name="sensor_model/max_range" value="6.0" />
+		<param name="sensor_model/max_range" value="8.0" />
 		
 		<remap from="cloud_in" to="/flipper/velodyne_points" />
 		<param name="filter_ground" type="bool" value="true" />

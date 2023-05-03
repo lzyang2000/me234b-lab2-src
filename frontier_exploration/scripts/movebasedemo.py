@@ -15,12 +15,12 @@ goal = PoseStamped()
 goal.header.frame_id = "flipper/map"
 goal.header.stamp = rospy.Time.now()
 goal.pose.position.z = 0.0
-goal.pose.position.x = -2
-goal.pose.position.y = 1
-goal.pose.orientation.w = 0
+goal.pose.position.x = 3
+goal.pose.position.y = 2
+goal.pose.orientation.w = 1
 goal.pose.orientation.x = 0
 goal.pose.orientation.y = 0
-goal.pose.orientation.z = -1
+goal.pose.orientation.z = 0
 while rospy.is_shutdown() == False:
     goal_pub.publish(goal)
     rospy.sleep(2.0)

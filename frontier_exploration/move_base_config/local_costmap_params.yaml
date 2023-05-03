@@ -5,12 +5,12 @@ local_costmap:
   publish_voxel_map: true
 
   #Set the global and robot frames for the costmap
-  global_frame: odom
-  robot_base_frame: base_link
+  global_frame: flipper/map
+  robot_base_frame: flipper/base_link_odom
 
   #Set the update and publish frequency of the costmap
-  update_frequency: 5.0
-  publish_frequency: 2.0
+  update_frequency: 1.0
+  publish_frequency: 1.0
 
   #We'll configure this costmap to be a rolling window... meaning it is always
   #centered at the robot
