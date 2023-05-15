@@ -39,7 +39,7 @@ rospy.wait_for_service("/global_planner/planner/make_plan")
 while not rospy.is_shutdown():
     try:
         get_plan = rospy.ServiceProxy("/global_planner/planner/make_plan", GetPlan)
-        resp1 = get_plan(start, goal, 0.1)
+        resp1 = get_plan(start, goal, 0.01)
         goal_pub.publish(goal)
         start_pub.publish(start)
         path_pub.publish(resp1.plan)

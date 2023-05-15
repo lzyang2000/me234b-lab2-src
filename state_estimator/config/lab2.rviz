@@ -10,6 +10,7 @@ Panels:
         - /Path1
         - /TF1/Frames1
         - /Odometry1/Shape1
+        - /Pose2
       Splitter Ratio: 0.5135593414306641
     Tree Height: 1116
   - Class: rviz/Selection
@@ -59,7 +60,7 @@ Visualization Manager:
       Axes Length: 1
       Axes Radius: 0.10000000149011612
       Class: rviz/Pose
-      Color: 0; 255; 0
+      Color: 255; 0; 0
       Enabled: true
       Head Length: 0.30000001192092896
       Head Radius: 0.10000000149011612
@@ -76,8 +77,8 @@ Visualization Manager:
       Class: rviz/Path
       Color: 0; 0; 255
       Enabled: true
-      Head Diameter: 0.30000001192092896
-      Head Length: 0.20000000298023224
+      Head Diameter: 0.05000000074505806
+      Head Length: 0.05000000074505806
       Length: 0.30000001192092896
       Line Style: Lines
       Line Width: 0.029999999329447746
@@ -90,7 +91,7 @@ Visualization Manager:
       Pose Style: None
       Queue Size: 10
       Radius: 0.029999999329447746
-      Shaft Diameter: 0.10000000149011612
+      Shaft Diameter: 0.009999999776482582
       Shaft Length: 0.10000000149011612
       Topic: /global_planner/planner/plan
       Unreliable: false
@@ -262,17 +263,17 @@ Visualization Manager:
       Class: rviz/Map
       Color Scheme: map
       Draw Behind: false
-      Enabled: true
+      Enabled: false
       Name: Map
       Topic: /global_planner/planner/potential
       Unreliable: false
       Use Timestamp: false
-      Value: true
+      Value: false
     - Alpha: 1
       Axes Length: 1
       Axes Radius: 0.10000000149011612
       Class: rviz/Pose
-      Color: 255; 25; 0
+      Color: 0; 255; 0
       Enabled: true
       Head Length: 0.30000001192092896
       Head Radius: 0.10000000149011612
@@ -312,7 +313,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 9.328485488891602
+      Distance: 9.164494514465332
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -320,9 +321,9 @@ Visualization Manager:
         Value: false
       Field of View: 0.7853981852531433
       Focal Point:
-        X: 3.104480266571045
-        Y: 2.558804750442505
-        Z: -0.06432542949914932
+        X: 3.170351982116699
+        Y: 1.8748692274093628
+        Z: -0.06426134705543518
       Focal Shape Fixed Size: false
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
