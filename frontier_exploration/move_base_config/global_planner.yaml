@@ -1,0 +1,5 @@
+default_tolerance: 0.1
+use_dijkstra: false
+use_grid_path: true
+visualize_potential: true
+orientation_mode: 0
