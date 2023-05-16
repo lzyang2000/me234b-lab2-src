@@ -5,7 +5,7 @@ import rospy
 from geometry_msgs.msg import PoseStamped
 from nav_msgs.msg import Path
 from nav_msgs.srv import GetPlan
-
+import tf
 rospy.init_node("move_base_demo")
 
 # publisher to change the arm group
@@ -43,7 +43,14 @@ while not rospy.is_shutdown():
         goal_pub.publish(goal)
         start_pub.publish(start)
         path_pub.publish(resp1.plan)
+        path = []
+        for pose in resp1.plan.poses:
+            yaw = tf.transformations.euler_from_quaternion((pose.pose.orientation.x, pose.pose.orientation.y, pose.pose.orientation.z, pose.pose.orientation.w))[2]
+            path.append((pose.pose.position.x, pose.pose.position.y, yaw))
+        with open("plan.txt", "w") as f:
+            f.write(str(path))
+        f.close()
         # print(resp1)
     except rospy.ServiceException as e:
         print("Service call failed: %s" % e)
-    rospy.sleep(1)
+    rospy.sleep(10)
