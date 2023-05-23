@@ -1,2 +1,5 @@
 .vscode
 state_estimator/figs
+__pycache__
+*.swp
+.ipynb*
