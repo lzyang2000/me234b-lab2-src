@@ -1,8 +1,9 @@
 <launch>
   <!-- <param name="/use_sim_time" value="true"/> -->
   <node name="rviz" pkg="rviz" type="rviz" required="true" args="-d $(find state_estimator)/config/lab2.rviz" />
-  <node pkg="tf" type="static_transform_publisher" name="link1_broadcaster" args="0 0 0 0 0 0 flipper/map flipper/base_link_odom 100" />
-  <node name="map_pub" pkg="frontier_exploration" type="prelab3b2_map.py" output="screen" cwd="node"/>
+  <!-- <node pkg="tf" type="static_transform_publisher" name="link1_broadcaster" args="0 0 0 0 0 0 flipper/map flipper/base_link_odom 100" /> -->
+    <!-- Run the map and global planner node -->
+  <node name="map_pub" pkg="frontier_exploration" type="prelab3b2_nav.py" output="screen" cwd="node"/>
   <!-- Publishes the voxel grid to rviz for display -->
   <!-- Run the costmap node -->
   <!-- <node name="costmap_node" pkg="costmap_2d" type="costmap_2d_node" >
@@ -15,7 +16,9 @@
 
     </node>
 
-  <node name="demo" pkg="frontier_exploration" type="prelab3b2_plan.py" output="screen" cwd="node"/>
+  <!-- <node name="global" pkg="frontier_exploration" type="prelab3b2_plan.py" output="screen" cwd="node"/> -->
+  <!-- Run the local planner node -->
+  <node name="local" pkg="frontier_exploration" type="p_local_planner.py" output="screen" cwd="node"/>  
 
     <!-- <rosparam file="$(find frontier_exploration)/move_base_config/global_planner.yaml" command="load" /> -->
 </launch>
