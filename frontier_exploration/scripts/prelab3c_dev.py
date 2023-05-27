@@ -53,7 +53,6 @@ import getUProportional as gu
 
 # In[2]:
 
-
 def initPlotSpace():
     plt.xlim([-1/4, 1.75])
     plt.ylim([-1/4, 1.75])
@@ -68,7 +67,7 @@ def plotState(vecx, color='black', label="", alpha = 1):
         vecx[1] + np.sin(vecx[2])]
     plt.quiver(*xy_start, *xy_end, color=color, label=label, alpha=alpha)
 
-plt.figure()
+fig = plt.figure()
 vecx = np.array([0, 0, np.pi/2])
 
 vecx_0 = np.array([0,0,0])
@@ -80,6 +79,9 @@ plotState(vecx_f, color="green", label="End")
 plotState(vecx, label="state")
 plt.legend(loc="lower left")
 plt.title("Test plotting functions")
+plt.show()
+print("show 1")
+plt.ion()
 
 def plotResult(x_cvx, w, vecx_0=vecx_0, vecx_f=vecx_f):
     fig = plt.figure()
@@ -242,6 +244,14 @@ n_x = 3
 n_u = 2
 dt = 0.1
 
+# Target
+vecx_0 = np.array([0,0,0])
+vecx_ref = np.array([1, 1.5, np.pi/2])
+vecu_0 = np.array([0,0])
+
+plt.ion()
+
+
 # Kinematics
 def getA_d(vecx, vecu, dt=dt):
     assert vecx.shape == (n_x,), str(vecx)
@@ -253,7 +263,8 @@ def getA_d(vecx, vecu, dt=dt):
                     [0, 1,  V*np.cos(theta)*dt],
                     [0, 0,                   1]])
     return A_d
-A_d = getA_d
+A_d = getA_d(vecx_0, vecu_0, dt)
+
 
 def getB_d(vecx, vecu, dt=dt):
     assert len(vecu)==n_u
@@ -262,7 +273,7 @@ def getB_d(vecx, vecu, dt=dt):
                     [np.sin(theta)*dt,  0],
                     [0               , dt]])
     return B_d
-B_d = getB_d
+B_d = getB_d(vecx_0, vecu_0, dt)
 
 
 # # Optimization problem
@@ -280,17 +291,15 @@ Q, R = np.eye(n_x), 0.1*np.eye(n_u)
 Q[-1,-1] = 0.1
 R[-1,-1] = 1
 
-# Target
-vecx_0 = np.array([0,0,0])
-vecx_ref = np.array([1, 1.5, np.pi/2])
-vecu_0 = np.array([0,0])
-
 # Prediction horizon
 N_h = 20
 N_mpc = 11 # Even numbers work better (?)
+plt.ion()
+
 
 # Constraints
 V_max, omega_max = 0.5, np.pi/3 # m/s, rad/s
+
 
 #### Optimization  setup
 def getProblem(x_prev_np, u_prev_np,
@@ -301,7 +310,7 @@ def getProblem(x_prev_np, u_prev_np,
     vecu_min = -vecu_max
     vecx_max = np.array([np.inf, np.inf, np.inf])
     vecx_min = -vecx_max
-    
+
     u_cvx = cvx.Variable((n_u, N_h))
     x_cvx = cvx.Variable((n_x, N_h+1))
     x_init_cvx = cvx.Parameter(n_x, name="x_init")
@@ -309,6 +318,7 @@ def getProblem(x_prev_np, u_prev_np,
     objective = 0
     constraints = [x_cvx[:,0]==x_init_cvx]
     for k in range(N_h):
+
         # Seems to break if we run MPC with state cost per state instead of
         # just at the end
         #objective += cvx.quad_form(x_cvx[:,k] - vecx_ref, Q) \
@@ -334,15 +344,19 @@ prob, x_init_cvx, x_cvx, u_cvx = getProblem(x_prev_np=x_warmstart,
 vecx = vecx_0
 vecu = vecu_0
 
-plotResult(x_warmstart, vecx_f=vecx_ref, w=-1)
+result_fig = plotResult(x_warmstart, vecx_f=vecx_ref, w=-1)
+plt.show()
+print("Show 2")
 
+counter = 1
 for w in range(N_mpc):
-    
+
+
     prob.solve(solver=cvx.OSQP, warm_start=False)
     
     if x_cvx.value is not None: #and N_mpc < 10:
-        plotResult(x_cvx.value, vecx_f=vecx_ref, w=w)
-        plt.draw()
+        return_fig = plotResult(x_cvx.value, vecx_f=vecx_ref, w=w)
+        plt.show()
     
     if w < N_mpc-1:
         prob, x_init_cvx, x_cvx, u_cvx = getProblem(x_prev_np=x_cvx.value,
