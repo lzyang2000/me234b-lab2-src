@@ -11,6 +11,7 @@ Panels:
         - /TF1/Frames1
         - /Odometry1/Shape1
         - /Pose2
+        - /Pose3
       Splitter Ratio: 0.5135593414306641
     Tree Height: 417
   - Class: rviz/Selection
@@ -103,9 +104,13 @@ Visualization Manager:
       Frame Timeout: 15
       Frames:
         All Enabled: false
+        base_footprint:
+          Value: true
         base_link:
           Value: true
         map:
+          Value: true
+        odom:
           Value: true
       Marker Alpha: 1
       Marker Scale: 1
@@ -114,8 +119,11 @@ Visualization Manager:
       Show Axes: true
       Show Names: true
       Tree:
-        map:
-          base_link:
+        odom:
+          base_footprint:
+            base_link:
+              {}
+          map:
             {}
       Update Interval: 0
       Value: true
@@ -285,6 +293,31 @@ Visualization Manager:
       Topic: /move_base_simple/goal
       Unreliable: false
       Value: true
+    - Alpha: 1
+      Class: rviz/Polygon
+      Color: 25; 255; 0
+      Enabled: true
+      Name: Polygon
+      Queue Size: 10
+      Topic: /global_planner/costmap/footprint
+      Unreliable: false
+      Value: true
+    - Alpha: 1
+      Axes Length: 1
+      Axes Radius: 0.10000000149011612
+      Class: rviz/Pose
+      Color: 85; 0; 255
+      Enabled: true
+      Head Length: 0.30000001192092896
+      Head Radius: 0.10000000149011612
+      Name: Pose
+      Queue Size: 10
+      Shaft Length: 1
+      Shaft Radius: 0.05000000074505806
+      Shape: Arrow
+      Topic: /curr_goal
+      Unreliable: false
+      Value: true
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
@@ -313,7 +346,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 17.40178680419922
+      Distance: 9.235005378723145
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -321,9 +354,9 @@ Visualization Manager:
         Value: false
       Field of View: 0.7853981852531433
       Focal Point:
-        X: 0.036442674696445465
-        Y: 0.2983241677284241
-        Z: -0.06739911437034607
+        X: 3.541400671005249
+        Y: 2.987761974334717
+        Z: -0.06468037515878677
       Focal Shape Fixed Size: false
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
@@ -331,7 +364,7 @@ Visualization Manager:
       Near Clip Distance: 0.009999999776482582
       Pitch: 1.5697963237762451
       Target Frame: <Fixed Frame>
-      Yaw: 4.709042072296143
+      Yaw: 4.704042911529541
     Saved: ~
 Window Geometry:
   Displays:
@@ -349,5 +382,5 @@ Window Geometry:
   Views:
     collapsed: false
   Width: 1375
-  X: 501
-  Y: 101
+  X: 405
+  Y: 5

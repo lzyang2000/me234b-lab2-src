@@ -8,7 +8,6 @@
   <node pkg="tf" type="static_transform_publisher" name="link1_broadcaster" args="0 0 0 0 0 0 odom map 100" />
     <!-- Run the map and global planner node -->
   <node name="map_sim" pkg="frontier_exploration" type="sim_map_pub.py" output="screen" cwd="node"/>
-  <node name="map_pub" pkg="frontier_exploration" type="prelab3b2_nav.py" output="screen" cwd="node"/>
   <!-- Publishes the voxel grid to rviz for display -->
   <!-- Run the costmap node -->
   <!-- <node name="costmap_node" pkg="costmap_2d" type="costmap_2d_node" >
@@ -20,10 +19,14 @@
       <rosparam file="$(find frontier_exploration)/move_base_config/costmap_standalone.yaml" command="load" ns="costmap" />
 
     </node>
+  
+  <node name="navigation" pkg="frontier_exploration" type="prelab3b2_nav.py" output="screen" cwd="node"/>
 
   <!-- <node name="global" pkg="frontier_exploration" type="prelab3b2_plan.py" output="screen" cwd="node"/> -->
   <!-- Run the local planner node -->
-  <!-- <node name="local" pkg="frontier_exploration" type="p_local_planner.py" output="screen" cwd="node"/>   -->
+  <node name="local" pkg="frontier_exploration" type="p_local_planner.py" output="screen" cwd="node">
+    <remap from="/cmd_vel/teleopDrive" to="/cmd_vel"/>
+  </node>
 
     <!-- <rosparam file="$(find frontier_exploration)/move_base_config/global_planner.yaml" command="load" /> -->
 </launch>

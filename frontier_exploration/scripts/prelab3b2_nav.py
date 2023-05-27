@@ -12,8 +12,8 @@ class navigation():
         self.map_pub = rospy.Publisher("map", OccupancyGrid, queue_size=1)
         self.map_sub = rospy.Subscriber("/mce234b/grid_published", Float32MultiArray, self.map_callback, queue_size=1)
         self.goal_sub = rospy.Subscriber("/mce234b/goal_pose_published", PoseStamped, self.goal_callback, queue_size=1)
-        # self.curr_sub = rospy.Subscriber("/optitrack/vrpn_client_node/mce234b_bot/pose", PoseStamped, self.curr_callback, queue_size=1)
-        self.curr_sub = rospy.Subscriber("/base_pose_ground_truth", Odometry, self.curr_callback_gt, queue_size=1)
+        self.curr_sub = rospy.Subscriber("/optitrack/vrpn_client_node/mce234b_bot/pose", PoseStamped, self.curr_callback, queue_size=1)
+        self.curr_sub_sim = rospy.Subscriber("/base_pose_ground_truth", Odometry, self.curr_callback_sim, queue_size=1)
         self.global_path_pub = rospy.Publisher("global_path", Path, queue_size=1)
         self.map = OccupancyGrid()
         self.has_map = False
@@ -41,7 +41,7 @@ class navigation():
         self.has_curr = True
         # publish path
     
-    def curr_callback_gt(self, msg):
+    def curr_callback_sim(self, msg):
         # set curr
         self.curr.pose = msg.pose.pose
         self.curr.header.frame_id = "map"
@@ -130,7 +130,7 @@ if __name__ == '__main__':
     
 
     # rospy.wait_for_service("/global_planner/planner/make_plan")
-    rate = rospy.Rate(10)
+    rate = rospy.Rate(1)
     while rospy.is_shutdown() == False:
         # nav.map_pub.publish(map_array_msg)
         nav.publish()
