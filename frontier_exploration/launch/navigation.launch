@@ -1,5 +1,6 @@
 <launch>
   <!-- <param name="/use_sim_time" value="true"/> -->
+  <!-- <include file="$(find frontier_exploration)/launch/stage.launch"/> -->
   <node name="rviz" pkg="rviz" type="rviz" required="true" args="-d $(find state_estimator)/config/lab2.rviz" />
   <!-- <node pkg="tf" type="static_transform_publisher" name="link1_broadcaster" args="0 0 0 0 0 0 flipper/map flipper/base_link_odom 100" /> -->
     <!-- Run the map and global planner node -->
@@ -18,7 +19,7 @@
 
   <!-- <node name="global" pkg="frontier_exploration" type="prelab3b2_plan.py" output="screen" cwd="node"/> -->
   <!-- Run the local planner node -->
-  <node name="local" pkg="frontier_exploration" type="p_local_planner.py" output="screen" cwd="node"/>  
+  <!-- <node name="local" pkg="frontier_exploration" type="p_local_planner.py" output="screen" cwd="node"/>   -->
 
     <!-- <rosparam file="$(find frontier_exploration)/move_base_config/global_planner.yaml" command="load" /> -->
 </launch>
