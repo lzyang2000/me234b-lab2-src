@@ -1,7 +1,7 @@
 <launch>
   <master auto="start"/>
   <param name="/use_sim_time" value="true"/>
-  <node pkg="stage_ros" type="stageros" name="stageros" args="$(find dlite_sim)/stage_config/worlds/SDH7.world" respawn="false" >
+  <node pkg="stage_ros" type="stageros" name="stageros" args="$(find frontier_exploration)/stage_config/worlds/map.world" respawn="false" >
     <param name="base_watchdog_timeout" value="0.2"/>
   </node>
   <!-- <node name="rqt_publisher" pkg="rqt_publisher" type="rqt_publisher" /> -->

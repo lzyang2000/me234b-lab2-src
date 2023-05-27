@@ -4,25 +4,12 @@ define block model
   gui_nose 0
 )
 
-define topurg ranger
-(
-  sensor(
-    range_max 50.0
-    fov 360
-    samples 1081
-  )
-  # generic model properties
-  color "black"
-  size [ 0.020 0.020 0.050 ]
-)
-
 define pr2 position
 (
-  size [0.100 0.100 0.250]
+  size [0.8 0.5 0.4]
   origin [0.000 0.000 0.000 0.000]
   gui_nose 1
-  drive "omni"
-  topurg(pose [ 0.000 0.000 0.000 0.000 ])
+  drive "diff"
 )
 
 define floorplan model
@@ -60,10 +47,10 @@ window
 floorplan
 ( 
   name "willow"
-  bitmap "../maps/SDH7_floorplan.pgm"
-  size [40.000 40.000 0.300]
-  pose [ 0.000 0.000 0.000 0.000 ]
+  bitmap "../maps/map.pgm"
+  size [6.500 6.5000 0.300]
+  pose [3.25 3.25 0.000 0.000 ]
 )
 
 # throw in a robot
-pr2( pose [ 0.000 0.000 0.000 0.000] name "pr2" color "blue")
+pr2( pose [ 1.500 1.500 0.000 0.000] name "pr2" color "blue")

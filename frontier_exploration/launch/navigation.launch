@@ -1,9 +1,13 @@
 <launch>
   <!-- <param name="/use_sim_time" value="true"/> -->
-  <!-- <include file="$(find frontier_exploration)/launch/stage.launch"/> -->
-  <node name="rviz" pkg="rviz" type="rviz" required="true" args="-d $(find state_estimator)/config/lab2.rviz" />
-  <!-- <node pkg="tf" type="static_transform_publisher" name="link1_broadcaster" args="0 0 0 0 0 0 flipper/map flipper/base_link_odom 100" /> -->
+  <include file="$(find frontier_exploration)/launch/stage.launch"/>
+  <node name="rviz" pkg="rviz" type="rviz" required="true" args="-d $(find state_estimator)/config/lab2.rviz" >
+    <remap from="/move_base_simple/goal" to="/mce234b/goal_pose_published"/>
+  </node>
+        
+  <node pkg="tf" type="static_transform_publisher" name="link1_broadcaster" args="0 0 0 0 0 0 odom map 100" />
     <!-- Run the map and global planner node -->
+  <node name="map_sim" pkg="frontier_exploration" type="sim_map_pub.py" output="screen" cwd="node"/>
   <node name="map_pub" pkg="frontier_exploration" type="prelab3b2_nav.py" output="screen" cwd="node"/>
   <!-- Publishes the voxel grid to rviz for display -->
   <!-- Run the costmap node -->
