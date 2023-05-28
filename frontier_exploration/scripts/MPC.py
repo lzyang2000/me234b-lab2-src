@@ -71,6 +71,8 @@ def getNextState(vecx_0, vecu, dt):
 
 def getWarmStart(vecx_0, vecx_f, vecu_0, N_h,
              K_h=-0.9, K_p=-0.9):
+    vecx_0 = np.array(vecx_0)
+    vecx_f = np.array(vecx_f)
     THETA_TOL_DEG = 10 # degrees
     V_MAX = 0.5 # m/s
     OMEGA_MAX = np.pi/3 # rad/s
@@ -170,8 +172,8 @@ def getMPC(vecx_0=np.array([0,0,0]), vecx_ref=np.array([1, 1.5, np.pi/2]), vecu_
     # Note costs work best when omega is expensive and 
     # theta deviation is cheap
     Q, R = np.eye(n_x), 0.1*np.eye(n_u)
-    Q[-1,-1] = 0.1
-    R[-1,-1] = 1
+    # Q[-1,-1] = 0.1
+    # R[-1,-1] = 1
 
 
     # Constraints
