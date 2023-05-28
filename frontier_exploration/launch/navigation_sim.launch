@@ -24,7 +24,7 @@
 
   <!-- <node name="global" pkg="frontier_exploration" type="prelab3b2_plan.py" output="screen" cwd="node"/> -->
   <!-- Run the local planner node -->
-  <node name="local" pkg="frontier_exploration" type="p_local_planner.py" output="screen" cwd="node">
+  <node name="local" pkg="frontier_exploration" type="mpc_local_planner.py" output="screen" cwd="node">
     <remap from="/cmd_vel/teleopDrive" to="/cmd_vel"/>
   </node>
 
