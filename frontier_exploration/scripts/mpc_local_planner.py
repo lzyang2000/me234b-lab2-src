@@ -10,7 +10,7 @@ from geometry_msgs.msg import Twist
 from tf.transformations import euler_from_quaternion, quaternion_from_euler
 from MPC import getMPC
 
-class PD_local_planner:
+class MPC_local_planner:
     def __init__(self):
         self.cmd_pub = rospy.Publisher("/cmd_vel/teleopDrive", Twist, queue_size=1)
         self.path_sub = rospy.Subscriber(
@@ -151,6 +151,6 @@ class PD_local_planner:
 
 
 if __name__ == "__main__":
-    rospy.init_node("pd_controller")
-    pd = PD_local_planner()
+    rospy.init_node("mpc_controller")
+    mpc = MPC_local_planner()
     rospy.spin()
